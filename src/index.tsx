@@ -6,12 +6,14 @@ import UseMouse from './components/useMouse';
 import App from 'useCounter';
 import Render from 'useRenderCount';
 import App1 from 'usePrevious';
+import App5 from 'useHover';
 
 const root = createRoot(document.getElementById('root')!);
 
 root.render(
   <BrowserRouter>
     <div className=" ">
+      <App5/>
       <Render />
       <UseMouse />
       <App />
