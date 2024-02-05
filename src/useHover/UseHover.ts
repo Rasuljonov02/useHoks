@@ -1,12 +1,21 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from 'react';
 
 export function useHover() {
-  const [hover, setHover] = useState<any>({ a: null });
+  const [hover, setHover] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: MouseEvent) => {
-    setHover(() => ({ a: e }));
-    console.log('Mouse hover:', hover); 
+  const handleMouseMove = () => {
+    setHover(prevHover => {
+      console.log('Mouse hover:', !prevHover);
+      return true;
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHover(prevHover => {
+      console.log('Mouse hover:', false);
+      return false;
+    });
   };
 
   useEffect(() => {
@@ -14,12 +23,16 @@ export function useHover() {
 
     if (currentRef) {
       currentRef.addEventListener('mousemove', handleMouseMove);
+      currentRef.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
         currentRef.removeEventListener('mousemove', handleMouseMove);
+        currentRef.removeEventListener('mouseleave', handleMouseLeave);
+
+        setHover(false);
       };
     }
   }, [ref]);
 
-  return [hover, ref];
+  return [ref, hover];
 }
